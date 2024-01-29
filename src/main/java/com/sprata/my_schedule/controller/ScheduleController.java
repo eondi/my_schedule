@@ -103,8 +103,7 @@ public class ScheduleController  {
         if (!temp_list.isEmpty()) {
             return temp_list;
         }else {
-            throw new IllegalAccessException(" 해당 비밀번호가 틀렸습니다");
-            //throw new PwNotFoundException(pw);
+            throw new IllegalAccessException("해당 비밀번호가 틀렸습니다");
         }
     }
 
