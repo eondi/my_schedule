@@ -15,11 +15,8 @@ public class ScheduleRequestDto {
     private String title;
     @NotNull(message = "필수 입니다")
     private String text;
-    @NotNull(message = "필수 입니다")
-    private String manager;
-    @NotNull(message = "필수 입니다")
-    private String pw;
-    @NotNull(message = "필수 입니다")
-    @FutureOrPresent(message = "현재,미래만 입력 가능합니다")
-    private LocalDate date;
+
+//    private String user_id;
+
+
 }
