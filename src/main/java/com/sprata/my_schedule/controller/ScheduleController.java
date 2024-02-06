@@ -60,22 +60,7 @@ public class ScheduleController  {
     }
 
 
-//    // 선택 스케줄 삭제
-//    @DeleteMapping("/delete/{number}/{pw}")
-//    public void deleteSchedule(@PathVariable Integer number, @PathVariable String pw) throws IllegalAccessException {
-//        // 비밀번호 확인
-//        List<ScheduleResponseDto> temp_list = checkPw(pw);
-//
-//        if (scheduleList.containsKey(number)) {
-//            // 해당 스케줄 삭제
-//            scheduleList.remove(number);
-//        }
-//        else {
-//            throw new IllegalAccessException(" 해당 스케줄이 존재하지않습니다");
-//        }
-//
-//    }
-//
+
 
 
 }

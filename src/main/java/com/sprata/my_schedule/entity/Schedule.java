@@ -35,6 +35,8 @@ public class Schedule extends Timestamped{
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+
+
     public Schedule(ScheduleRequestDto requestDto, User user) {
         this.title = requestDto.getTitle();
         this.text = requestDto.getText();
