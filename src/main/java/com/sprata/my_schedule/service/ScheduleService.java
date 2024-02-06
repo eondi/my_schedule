@@ -8,6 +8,7 @@ import com.sprata.my_schedule.entity.User;
 import com.sprata.my_schedule.repository.ScheduleRepository;
 import com.sprata.my_schedule.responsentity.Message;
 import com.sprata.my_schedule.responsentity.StatusEnum;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -71,18 +72,46 @@ public class ScheduleService {
 
     public ResponseEntity<Message> getSchedule(Integer number, User user) {
 
+        message.setStatus(StatusEnum.OK);
 
-        Schedule schedule = scheduleRepository.findById(number).orElseThrow(() -> new IllegalArgumentException("선택한 메모는 존재하지 않습니다. "));
-        if(!schedule.getUser().getUsername().equals(user.getUsername())){
-            message.setStatus(StatusEnum.NOT_FOUND);
-            message.setMessage("선택한 메모는 존재하지 않습니다 ");
+        Schedule schedule = findScedule(number,user);
 
+        if (message.getStatus().equals(StatusEnum.NOT_FOUND)){
             return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
         }
+
         message.setStatus(StatusEnum.OK);
         message.setMessage("선택한 일정의 정보 조회를 성공했습니다.");
         message.setData(new ScheduleResponseDto(schedule));
 
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
+    }
+
+    private Schedule findScedule(Integer number, User user) {
+        Schedule schedule = scheduleRepository.findById(number).orElseThrow(() -> new IllegalArgumentException("선택한 할일이 존재하지 않습니다. "));
+        if(!schedule.getUser().getUsername().equals(user.getUsername())){
+            message.setStatus(StatusEnum.NOT_FOUND);
+            message.setMessage("선택한 할일 존재하지 않습니다 ");
+            message.setData(null);
+        }
+        return schedule;
+    }
+
+    @Transactional
+    public ResponseEntity<Message> updateSchedule(Integer number, ScheduleRequestDto requestDto, User user) {
+        message.setStatus(StatusEnum.OK);
+        Schedule schedule = findScedule(number,user);
+        if (message.getStatus().equals(StatusEnum.NOT_FOUND)){
+            return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
+        }
+
+        schedule.update(requestDto);
+
+        message.setStatus(StatusEnum.OK);
+        message.setMessage("선택한 일정의 수정 성공했습니다.");
+        message.setData(new ScheduleResponseDto(schedule));
+
+        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+
     }
 }

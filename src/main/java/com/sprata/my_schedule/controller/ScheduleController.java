@@ -39,31 +39,17 @@ public class ScheduleController  {
 
     //선택 일정 조회 기능
     @GetMapping("/{number}")
-    public ResponseEntity<Message> getSchedule(@PathVariable Integer number, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IllegalAccessException {
-
+    public ResponseEntity<Message> getSchedule(@PathVariable Integer number, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return  scheduleService.getSchedule(number, userDetails.getUser());
     }
-//
-//    // 선택한 일정 수정 기능
-//    @PutMapping("/update/{number}/{pw}")
-//    public  ScheduleResponseDto updateSchedule(@PathVariable Integer number, @PathVariable String pw, @RequestBody ScheduleRequestDto requestDto) throws IllegalAccessException {
-//        // 비밀번호 확인
-//        List<ScheduleResponseDto> temp_list = checkPw(pw);
-//
-//        // 해당 스케줄 존재확인
-//        ScheduleResponseDto ScheduleResponse = null;
-//        if (scheduleList.containsKey(number)) {
-//            // 해당 스케줄 가져오기
-//            Schedule schedule = scheduleList.get(number);
-//            schedule.update(requestDto);
-//            ScheduleResponse = new ScheduleResponseDto(schedule);
-//        }
-//        else {
-//            throw new IllegalAccessException(" 해당 스케줄이 존재하지않습니다");
-//        }
-//        return ScheduleResponse;
-//
-//    }
+
+    // 선택한 일정 수정 기능
+    @PutMapping("/update/{number}")
+    public ResponseEntity<Message>  updateSchedule(@PathVariable Integer number, @RequestBody ScheduleRequestDto requestDto,@AuthenticationPrincipal UserDetailsImpl userDetails) throws IllegalAccessException {
+
+        return scheduleService.updateSchedule(number, requestDto, userDetails.getUser());
+
+    }
 //
 //    // 선택 스케줄 삭제
 //    @DeleteMapping("/delete/{number}/{pw}")
@@ -81,15 +67,6 @@ public class ScheduleController  {
 //
 //    }
 //
-//    // 비밀번호 확인
-//    public List<ScheduleResponseDto> checkPw(String pw) throws IllegalAccessException {
-//        List<ScheduleResponseDto> temp_list = scheduleList.values().stream().filter(schedule -> schedule.getPw().equals(pw)).map(ScheduleResponseDto::new).toList();
-//        if (!temp_list.isEmpty()) {
-//            return temp_list;
-//        }else {
-//            throw new IllegalAccessException("해당 비밀번호가 틀렸습니다");
-//        }
-//    }
 
 
 }
