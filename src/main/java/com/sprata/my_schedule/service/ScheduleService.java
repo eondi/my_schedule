@@ -68,4 +68,21 @@ public class ScheduleService {
 
 
     }
+
+    public ResponseEntity<Message> getSchedule(Integer number, User user) {
+
+
+        Schedule schedule = scheduleRepository.findById(number).orElseThrow(() -> new IllegalArgumentException("선택한 메모는 존재하지 않습니다. "));
+        if(!schedule.getUser().getUsername().equals(user.getUsername())){
+            message.setStatus(StatusEnum.NOT_FOUND);
+            message.setMessage("선택한 메모는 존재하지 않습니다 ");
+
+            return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
+        }
+        message.setStatus(StatusEnum.OK);
+        message.setMessage("선택한 일정의 정보 조회를 성공했습니다.");
+        message.setData(new ScheduleResponseDto(schedule));
+
+        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+    }
 }

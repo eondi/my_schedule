@@ -36,14 +36,13 @@ public class ScheduleController  {
         System.out.println("here");
         return  scheduleService.getAllSchedules();
     }
-//
-    //선택 일정 조회 기능
 
-//    @GetMapping("/schedules/{number}")
-//    public ResponseEntity<Message> getSchedule(@PathVariable Integer number, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IllegalAccessException {
-//
-//        return  scheduleService.getSchedule(number, userDetails.getUser());
-//    }
+    //선택 일정 조회 기능
+    @GetMapping("/{number}")
+    public ResponseEntity<Message> getSchedule(@PathVariable Integer number, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IllegalAccessException {
+
+        return  scheduleService.getSchedule(number, userDetails.getUser());
+    }
 //
 //    // 선택한 일정 수정 기능
 //    @PutMapping("/update/{number}/{pw}")
