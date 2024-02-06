@@ -6,18 +6,15 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-public class ScheduleResponseDto {
-    private Integer number;
+public class ScheduleResponseDto2 {
     private String title;
-    private String text;
     private LocalDateTime createdAt;
     private String  username;
-
-    public ScheduleResponseDto(Schedule schedule) {
-        this.number = schedule.getNumber();
+    private  Boolean state;
+    public ScheduleResponseDto2(Schedule schedule, boolean state) {
         this.title = schedule.getTitle();
-        this.text = schedule.getText();
         this.createdAt  = schedule.getCreatedAt();
         this.username = schedule.getUser().getUsername();
+        this.state = state;
     }
 }

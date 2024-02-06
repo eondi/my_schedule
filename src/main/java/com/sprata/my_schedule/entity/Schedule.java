@@ -28,27 +28,17 @@ public class Schedule extends Timestamped{
     @Column(nullable = false)
     private String text;
 
-//    @Column(nullable = false)
-//    private String username;
-
     @Column(nullable = false)
     private boolean state;
-//
-//    @ManyToMany
-//    @JoinTable(name = "orders", // 중간 테이블 생성
-//    joinColumns = @JoinColumn(name = "Schedule_id"),
-//    inverseJoinColumns = @JoinColumn(name = "comment_id"))
-//    private List<Comment> commentList = new ArrayList<>();
-//
-//    public void addCommentList(Comment comment) {
-//        this.commentList.add(comment); // 외래 키(연관 관계) 설정
-//        comment.getScheduleList().add(this);
-//    }
 
-    public Schedule(ScheduleRequestDto requestDto) {
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    public Schedule(ScheduleRequestDto requestDto, User user) {
         this.title = requestDto.getTitle();
         this.text = requestDto.getText();
-//        this.username = requestDto.getManager();
+        this.user = user;
         this.state =false;
 
 
