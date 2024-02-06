@@ -50,7 +50,16 @@ public class ScheduleController  {
         return scheduleService.updateSchedule(number, requestDto, userDetails.getUser());
 
     }
-//
+
+    //할일카드 완료 기능
+    @PutMapping("/update-state/{number}")
+    public ResponseEntity<Message>  updateScheduleState(@PathVariable Integer number,@AuthenticationPrincipal UserDetailsImpl userDetails) throws IllegalAccessException {
+
+        return scheduleService.updateScheduleState(number, userDetails.getUser());
+
+    }
+
+
 //    // 선택 스케줄 삭제
 //    @DeleteMapping("/delete/{number}/{pw}")
 //    public void deleteSchedule(@PathVariable Integer number, @PathVariable String pw) throws IllegalAccessException {

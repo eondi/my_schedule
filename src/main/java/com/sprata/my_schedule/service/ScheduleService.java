@@ -114,4 +114,22 @@ public class ScheduleService {
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
 
     }
+
+    @Transactional
+    public ResponseEntity<Message> updateScheduleState(Integer number, User user) {
+        message.setStatus(StatusEnum.OK);
+        Schedule schedule = findScedule(number,user);
+        if (message.getStatus().equals(StatusEnum.NOT_FOUND)){
+            return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
+        }
+
+        schedule.updateState(true);
+
+        message.setStatus(StatusEnum.OK);
+        message.setMessage(number+" 가 완료 상태로 변경되었습니다.");
+        message.setData(new ScheduleResponseDto2(schedule, schedule.isState()));
+
+        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+
+    }
 }

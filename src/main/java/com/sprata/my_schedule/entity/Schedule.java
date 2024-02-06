@@ -48,4 +48,8 @@ public class Schedule extends Timestamped{
         this.title = requestDto.getTitle();
         this.text = requestDto.getText();
     }
+
+    public void updateState(boolean state) {
+        this.state = state;
+    }
 }
