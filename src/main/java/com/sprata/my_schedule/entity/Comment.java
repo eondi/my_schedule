@@ -1,5 +1,6 @@
 package com.sprata.my_schedule.entity;
 
+import com.sprata.my_schedule.dto.CommentRequestDto;
 import com.sprata.my_schedule.dto.CommentResponseDto;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -8,7 +9,6 @@ import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
 @Table(name = "comments")
 public class Comment extends Timestamped{
@@ -29,13 +29,13 @@ public class Comment extends Timestamped{
 
 
 
-    public Comment(CommentResponseDto requestDto, User user, Schedule schedule) {
+    public Comment(CommentRequestDto requestDto, User user, Schedule schedule) {
         this.text = requestDto.getText();
         this.user = user;
         this.schedule =schedule;
     }
 
-    public void update(CommentResponseDto requestDto) {
+    public void update(CommentRequestDto requestDto) {
         this.text = requestDto.getText();
     }
 }

@@ -1,5 +1,6 @@
 package com.sprata.my_schedule.service;
 
+import com.sprata.my_schedule.dto.CommentRequestDto;
 import com.sprata.my_schedule.dto.CommentResponseDto;
 import com.sprata.my_schedule.dto.ScheduleResponseDto;
 import com.sprata.my_schedule.entity.Comment;
@@ -21,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CommentService {
     private  final ScheduleRepository scheduleRepository;
     private  final CommentRepository  commentRepository;
-    public ResponseEntity<Message> createComment(Integer number, CommentResponseDto requestDto, User user) {
+    public ResponseEntity<Message> createComment(Integer number, CommentRequestDto requestDto, User user) {
 
         Message message = new Message();
         HttpHeaders headers= new HttpHeaders();
@@ -46,7 +47,7 @@ public class CommentService {
     }
 
     @Transactional
-    public ResponseEntity<Message> updateComment(Long number, CommentResponseDto requestDto, User user) {
+    public ResponseEntity<Message> updateComment(Long number, CommentRequestDto requestDto, User user) {
         Message message = new Message();
         HttpHeaders headers= new HttpHeaders();
 

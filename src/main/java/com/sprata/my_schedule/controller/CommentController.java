@@ -1,5 +1,6 @@
 package com.sprata.my_schedule.controller;
 
+import com.sprata.my_schedule.dto.CommentRequestDto;
 import com.sprata.my_schedule.dto.CommentResponseDto;
 import com.sprata.my_schedule.dto.ScheduleRequestDto;
 import com.sprata.my_schedule.dto.ScheduleResponseDto;
@@ -22,14 +23,14 @@ public class CommentController {
 
     //댓글 작성
     @PostMapping("/create/{number}")
-    public ResponseEntity<Message> createProduct(@PathVariable Integer number, @RequestBody CommentResponseDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseEntity<Message> createProduct(@PathVariable Integer number, @RequestBody CommentRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         System.out.println("here");
         return commentService.createComment(number, requestDto, userDetails.getUser());
     }
 
     //댓글 수정
     @PutMapping("/update/{number}")
-    public ResponseEntity<Message>  updateSchedule(@PathVariable Long number, @RequestBody CommentResponseDto requestDto,@AuthenticationPrincipal UserDetailsImpl userDetails) throws IllegalAccessException {
+    public ResponseEntity<Message>  updateSchedule(@PathVariable Long number, @RequestBody CommentRequestDto requestDto,@AuthenticationPrincipal UserDetailsImpl userDetails) throws IllegalAccessException {
 
         return commentService.updateComment(number, requestDto, userDetails.getUser());
 

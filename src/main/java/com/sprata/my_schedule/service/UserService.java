@@ -29,9 +29,6 @@ public class UserService {
             throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
         }
 
-//
-
-
 
         // 사용자 등록
         User user = new User(username, password);
