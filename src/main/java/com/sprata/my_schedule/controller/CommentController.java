@@ -16,13 +16,14 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/comment")
+@RequestMapping("/api/comments")
 public class CommentController {
     private final CommentService commentService;
 
     //댓글 작성
     @PostMapping("/create/{number}")
     public ResponseEntity<Message> createProduct(@PathVariable Integer number, @RequestBody CommentResponseDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        System.out.println("here");
         return commentService.createComment(number, requestDto, userDetails.getUser());
     }
 

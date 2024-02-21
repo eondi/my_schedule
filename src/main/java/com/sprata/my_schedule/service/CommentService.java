@@ -14,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +45,7 @@ public class CommentService {
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
 
+    @Transactional
     public ResponseEntity<Message> updateComment(Long number, CommentResponseDto requestDto, User user) {
         Message message = new Message();
         HttpHeaders headers= new HttpHeaders();

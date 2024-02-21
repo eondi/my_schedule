@@ -18,10 +18,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 
 import java.nio.charset.Charset;
@@ -35,18 +32,9 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/login-page")
-    public String loginPage() {
-        return "login";
-    }
-
-    @GetMapping("/signup")
-    public String signupPage() {
-        return "signup";
-    }
 
     @PostMapping("/signup")
-    public ResponseEntity<Message> signup(@Valid SignupRequestDto requestDto, BindingResult bindingResult) {
+    public ResponseEntity<Message> signup(@Valid @RequestBody SignupRequestDto requestDto, BindingResult bindingResult) {
         Message message = new Message();
         HttpHeaders headers= new HttpHeaders();
         headers.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
@@ -80,7 +68,6 @@ public class UserController {
     @ResponseBody
     public UserInfoDto getUserInfo(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         String username = userDetails.getUser().getUsername();
-
 
         return new UserInfoDto(username);
     }

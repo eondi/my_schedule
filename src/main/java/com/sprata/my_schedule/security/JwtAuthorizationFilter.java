@@ -1,5 +1,6 @@
 package com.sprata.my_schedule.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sprata.my_schedule.jwt.JwtUtil;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
@@ -37,6 +38,11 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
             if (!jwtUtil.validateToken(tokenValue)) {
                 log.error("Token Error");
+                res.setStatus(401);
+                res.setContentType("application/json");
+                res.setCharacterEncoding("UTF-8");
+                //res.getWriter().write(new ObjectMapper().writeValueAsString(responseDto));
+
                 return;
             }
 
