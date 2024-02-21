@@ -12,17 +12,18 @@ class SignupRequestDtoTest {
     @DisplayName("SignupRequestDto test")
     public void RequestDtoTest(){
         //given
-        String title = "testTitle";
-        String text = "testText";
+        String username = "test_username";
+        String pw = "test_pw";
 
         //when
-        ScheduleRequestDto scheduleRequestDto = new ScheduleRequestDto(title,text);
+        SignupRequestDto signupRequestDto = new SignupRequestDto(username,pw);
 
         //then
-        assertEquals("testTitle",scheduleRequestDto.getTitle());
-        assertEquals("testText",scheduleRequestDto.getText());
+        assertEquals("test_username",signupRequestDto.getUsername());
+        assertEquals("test_pw",signupRequestDto.getPassword());
 
     }
+
 
 
 }

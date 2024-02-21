@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,8 +43,15 @@ public class Schedule extends Timestamped{
         this.text = requestDto.getText();
         this.user = user;
         this.state =false;
+    }
 
-
+    public Schedule(ScheduleRequestDto requestDto, User user, Integer number) {
+        this.number = number;
+        this.title = requestDto.getTitle();
+        this.text = requestDto.getText();
+        this.user = user;
+        this.state =false;
+        this.setCreatedAt(LocalDateTime.now());
     }
 
     public void update(ScheduleRequestDto requestDto) {

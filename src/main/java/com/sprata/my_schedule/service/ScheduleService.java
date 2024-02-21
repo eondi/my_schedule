@@ -91,7 +91,7 @@ public class ScheduleService {
         Schedule schedule = scheduleRepository.findById(number).orElseThrow(() -> new IllegalArgumentException("선택한 할일이 존재하지 않습니다. "));
         if(!schedule.getUser().getUsername().equals(user.getUsername())){
             message.setStatus(StatusEnum.NOT_FOUND);
-            message.setMessage("선택한 할일 존재하지 않습니다 ");
+            message.setMessage("작성자의 할일이 존재하지 않습니다 ");
             message.setData(null);
         }
         return schedule;

@@ -34,6 +34,12 @@ public class Comment extends Timestamped{
         this.user = user;
         this.schedule =schedule;
     }
+    public Comment(CommentRequestDto requestDto, User user, Schedule schedule, Long number) {
+        this.text = requestDto.getText();
+        this.user = user;
+        this.schedule =schedule;
+        this.number = number;
+    }
 
     public void update(CommentRequestDto requestDto) {
         this.text = requestDto.getText();
