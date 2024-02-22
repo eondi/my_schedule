@@ -19,11 +19,11 @@ public class Comment extends Timestamped{
     @Column(nullable = false)
     private String text;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "schedule_id", nullable = false)
     private Schedule schedule;
 
