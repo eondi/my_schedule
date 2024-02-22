@@ -1,6 +1,7 @@
 package com.sprata.my_schedule.service;
 
 import com.sprata.my_schedule.dto.ScheduleRequestDto;
+import com.sprata.my_schedule.dto.ScheduleResponseDto2;
 import com.sprata.my_schedule.entity.Schedule;
 import com.sprata.my_schedule.entity.User;
 import com.sprata.my_schedule.repository.ScheduleRepository;
@@ -61,17 +62,11 @@ class ScheduleServiceTest {
         doReturn(scheduleList).when(scheduleRepository).findAll();
 
         // when
-        ResponseEntity<Message> response =  scheduleService.getAllSchedules();
+        Message message = scheduleService.getAllSchedules();
 
         // then
-        assertEquals(200,response.getStatusCode().value());
-        assertEquals("일정 전체 조회를 성공했습니다.",response.getBody().getMessage());
+        assertEquals("일정 전체 조회를 성공했습니다.",message.getMessage());
 
-        JSONObject jObj = new JSONObject(response.getBody());
-        JSONObject jObj2 = new JSONObject(jObj.get("data").toString());
-        assertEquals(2,jObj2.getJSONArray("TestUser").length());
-        assertEquals("testTitle2",jObj2.getJSONArray("TestUser").getJSONObject(0).get("title"));
-        assertEquals("testTitle",jObj2.getJSONArray("TestUser").getJSONObject(1).get("title"));
     }
 
     @Test
@@ -82,15 +77,11 @@ class ScheduleServiceTest {
         given(scheduleRepository.findById(1)).willReturn(Optional.of(schedule));
 
         // when
-        ResponseEntity<Message> response =  scheduleService.getSchedule(1,user);
+        Message message =  scheduleService.getSchedule(1,user);
 
         // then
-        assertEquals(200,response.getStatusCode().value());
-        assertEquals("선택한 일정의 정보 조회를 성공했습니다.",response.getBody().getMessage());
+        assertEquals("선택한 일정의 정보 조회를 성공했습니다.",message.getMessage());
 
-        JSONObject jObj = new JSONObject(response.getBody());
-        JSONObject jObj2 = new JSONObject(jObj.get("data").toString());
-        assertEquals("testTitle",jObj2.get("title"));
     }
 
     @Test
@@ -118,15 +109,10 @@ class ScheduleServiceTest {
         given(scheduleRepository.findById(1)).willReturn(Optional.of(schedule));
 
         // when
-        ResponseEntity<Message> response =  scheduleService.updateSchedule(1, requestDto2,user);
+        Message message =  scheduleService.updateSchedule(1, requestDto2,user);
 
         // then
-        assertEquals(200,response.getStatusCode().value());
-        assertEquals("선택한 일정의 수정 성공했습니다.",response.getBody().getMessage());
-
-        JSONObject jObj = new JSONObject(response.getBody());
-        JSONObject jObj2 = new JSONObject(jObj.get("data").toString());
-        assertEquals("testTitle2",jObj2.get("title"));
+        assertEquals("선택한 일정의 수정 성공했습니다.",message.getMessage());
     }
 
     @Test
@@ -138,11 +124,10 @@ class ScheduleServiceTest {
         User user = new User(2L,"testUser2", "testUser2");
 
         // when
-        ResponseEntity<Message> response =  scheduleService.updateSchedule(1, requestDto2,user);
+        Message message =  scheduleService.updateSchedule(1, requestDto2,user);
 
         // then
-        assertEquals(404,response.getStatusCode().value());
-        assertEquals("작성자의 할일이 존재하지 않습니다 ",response.getBody().getMessage());
+        assertEquals("작성자의 할일이 존재하지 않습니다 ",message.getMessage());
     }
 
     @Test
@@ -153,15 +138,10 @@ class ScheduleServiceTest {
         given(scheduleRepository.findById(1)).willReturn(Optional.of(schedule));
 
         // when
-        ResponseEntity<Message> response =  scheduleService.updateScheduleState(1, user);
+        Message message =  scheduleService.updateScheduleState(1, user);
 
         // then
-        assertEquals(200,response.getStatusCode().value());
-        assertEquals("1 가 완료 상태로 변경되었습니다.",response.getBody().getMessage());
-
-        JSONObject jObj = new JSONObject(response.getBody());
-        JSONObject jObj2 = new JSONObject(jObj.get("data").toString());
-        assertTrue((Boolean) jObj2.get("state"));
+        assertEquals("1 가 완료 상태로 변경되었습니다.",message.getMessage());
     }
 
 

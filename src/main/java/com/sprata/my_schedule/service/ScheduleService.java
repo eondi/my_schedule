@@ -32,6 +32,7 @@ public class ScheduleService {
 
     public ResponseEntity<Message>  createSchedule(ScheduleRequestDto requestDto, User user) {
         Schedule schedule = scheduleRepository.save(new Schedule(requestDto, user));
+
         message.setStatus(StatusEnum.OK);
         message.setMessage("일정이 성공적으로 작성되었습니다.");
         message.setData(new ScheduleResponseDto(schedule));
@@ -39,7 +40,7 @@ public class ScheduleService {
         return new ResponseEntity<>(message, headers, HttpStatus.OK);
     }
 
-    public ResponseEntity<Message> getAllSchedules() {
+    public Message getAllSchedules() {
         List<Schedule> scheduleList = scheduleRepository.findAll();
 
         HashMap<String, List<ScheduleResponseDto2>> scheduleHashMap = new HashMap<>();
@@ -65,26 +66,29 @@ public class ScheduleService {
         message.setMessage("일정 전체 조회를 성공했습니다.");
         message.setData(scheduleHashMap);
 
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        return message;
 
 
     }
 
-    public ResponseEntity<Message> getSchedule(Integer number, User user) {
+    public Message getSchedule(Integer number, User user) {
 
         message.setStatus(StatusEnum.OK);
 
         Schedule schedule = findScedule(number,user);
 
         if (message.getStatus().equals(StatusEnum.NOT_FOUND)){
-            return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
+            message.setStatus(StatusEnum.NOT_FOUND);
+            message.setMessage("선택한 할일이 존재하지 않습니다. ");
+
+            return message;
         }
 
         message.setStatus(StatusEnum.OK);
         message.setMessage("선택한 일정의 정보 조회를 성공했습니다.");
         message.setData(new ScheduleResponseDto(schedule));
 
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        return message;
     }
 
     private Schedule findScedule(Integer number, User user) {
@@ -98,11 +102,13 @@ public class ScheduleService {
     }
 
     @Transactional
-    public ResponseEntity<Message> updateSchedule(Integer number, ScheduleRequestDto requestDto, User user) {
+    public Message updateSchedule(Integer number, ScheduleRequestDto requestDto, User user) {
         message.setStatus(StatusEnum.OK);
         Schedule schedule = findScedule(number,user);
         if (message.getStatus().equals(StatusEnum.NOT_FOUND)){
-            return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
+            message.setStatus(StatusEnum.NOT_FOUND);
+            message.setMessage("작성자의 할일이 존재하지 않습니다 ");
+            return message;
         }
 
         schedule.update(requestDto);
@@ -111,16 +117,18 @@ public class ScheduleService {
         message.setMessage("선택한 일정의 수정 성공했습니다.");
         message.setData(new ScheduleResponseDto(schedule));
 
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        return message;
 
     }
 
     @Transactional
-    public ResponseEntity<Message> updateScheduleState(Integer number, User user) {
+    public Message updateScheduleState(Integer number, User user) {
         message.setStatus(StatusEnum.OK);
         Schedule schedule = findScedule(number,user);
         if (message.getStatus().equals(StatusEnum.NOT_FOUND)){
-            return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
+            message.setStatus(StatusEnum.NOT_FOUND);
+            message.setMessage("작성자의 할일이 존재하지 않습니다 ");
+            return message;
         }
 
         schedule.updateState(true);
@@ -129,7 +137,7 @@ public class ScheduleService {
         message.setMessage(number+" 가 완료 상태로 변경되었습니다.");
         message.setData(new ScheduleResponseDto2(schedule, schedule.isState()));
 
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        return message;
 
     }
 }
