@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CommentService {
     private  final ScheduleRepository scheduleRepository;
     private  final CommentRepository  commentRepository;
-    public ResponseEntity<Message> createComment(Integer number, CommentRequestDto requestDto, User user) {
+    public Message createComment(Integer number, CommentRequestDto requestDto, User user) {
 
         Message message = new Message();
         HttpHeaders headers= new HttpHeaders();
@@ -34,7 +34,7 @@ public class CommentService {
             message.setStatus(StatusEnum.NOT_FOUND);
             message.setMessage("선택한 할일 존재하지 않습니다 ");
             message.setData(null);
-            return new ResponseEntity<>(message, headers, HttpStatus.NOT_FOUND);
+            return message;
         }
 
         Comment comment = commentRepository.save(new Comment(requestDto, user, schedule));
@@ -43,7 +43,7 @@ public class CommentService {
         message.setMessage("댓글작성 완료.");
         message.setData(new CommentResponseDto(comment));
 
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+        return message;
     }
 
     @Transactional

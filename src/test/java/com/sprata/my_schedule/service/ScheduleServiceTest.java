@@ -37,6 +37,7 @@ class ScheduleServiceTest {
     ScheduleRequestDto requestDto2;
 
 
+
     @BeforeEach
     void setUp() {
         // given

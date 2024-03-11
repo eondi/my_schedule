@@ -9,6 +9,7 @@ import com.sprata.my_schedule.security.UserDetailsImpl;
 import com.sprata.my_schedule.service.CommentService;
 import com.sprata.my_schedule.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class CommentController {
     @PostMapping("/create/{number}")
     public ResponseEntity<Message> createProduct(@PathVariable Integer number, @RequestBody CommentRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         System.out.println("here");
-        return commentService.createComment(number, requestDto, userDetails.getUser());
+        return new ResponseEntity<>(commentService.createComment(number, requestDto, userDetails.getUser()), HttpStatus.OK);
     }
 
     //댓글 수정

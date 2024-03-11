@@ -33,7 +33,7 @@ class UserRepositoryTest {
     @DisplayName("userName 검색 테스트")
     void findByUsernameTest() {
         // given
-        User user =new User("name", "pw");
+        User user = new User("name", "pw");
         User savedUser = userRepository.save(user);
 
         // when
