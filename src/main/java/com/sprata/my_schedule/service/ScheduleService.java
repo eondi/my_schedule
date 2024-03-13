@@ -22,122 +22,39 @@ import java.util.List;
 import java.util.stream.Stream;
 
 @Service
-@RequiredArgsConstructor
-public class ScheduleService {
-    private final ScheduleRepository scheduleRepository;
-    Message message = new Message();
-    HttpHeaders headers= new HttpHeaders();
-//  headers.setContentType(new MediaType("application", "json",Charset.forName("UTF-8")));
+
+public interface ScheduleService {
+    /**
+     * 게시글 생성
+     * @param requestDto 게시글 생성 요청정보
+     * @param user 게시글 생성 요청자
+     * @return 게시글 생성 결과
+     */
+    public ResponseEntity<Message>  createSchedule(ScheduleRequestDto requestDto, User user);
+
+    /**
+     * 게시글 전체 조회
+     * @return 게시글 전체 조회 결과
+     */
+    public Message getAllSchedules();
 
 
-    public ResponseEntity<Message>  createSchedule(ScheduleRequestDto requestDto, User user) {
-        Schedule schedule = scheduleRepository.save(new Schedule(requestDto, user));
-
-        message.setStatus(StatusEnum.OK);
-        message.setMessage("일정이 성공적으로 작성되었습니다.");
-        message.setData(new ScheduleResponseDto(schedule));
-
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
-    }
-
-    public Message getAllSchedules() {
-        List<Schedule> scheduleList = scheduleRepository.findAll();
-
-        HashMap<String, List<ScheduleResponseDto2>> scheduleHashMap = new HashMap<>();
-
-        for (Schedule schedule: scheduleList){
-            if(!scheduleHashMap.containsKey(schedule.getUser().getUsername())){
-                List<ScheduleResponseDto2> ScheduleList = new ArrayList<>();
-                ScheduleList.add(new ScheduleResponseDto2(schedule, schedule.isState()));
-                scheduleHashMap.put(schedule.getUser().getUsername(), ScheduleList);
-            }else{
-                scheduleHashMap.get(schedule.getUser().getUsername()).add(new ScheduleResponseDto2(schedule, schedule.isState()));
-            }
-        }
-
-        // 정렬
-        for (String name : scheduleHashMap.keySet()){
-            Stream<ScheduleResponseDto2> temp = scheduleHashMap.get(name).stream().sorted(Comparator.comparing(ScheduleResponseDto2::getCreatedAt).reversed());
-            scheduleHashMap.put(name, temp.toList());
-        }
+    /**
+     * 게시글 선택 조회
+     * @return 게시글 선택 조회 결과
+     */
+    public Message getSchedule(Integer number, User user);
 
 
-        message.setStatus(StatusEnum.OK);
-        message.setMessage("일정 전체 조회를 성공했습니다.");
-        message.setData(scheduleHashMap);
+    /**
+     * 게시글 수정
+     * @return 게시글 선택 조회 결과
+     */
+    public Message updateSchedule(Integer number, ScheduleRequestDto requestDto, User user);
 
-        return message;
-
-
-    }
-
-    public Message getSchedule(Integer number, User user) {
-
-        message.setStatus(StatusEnum.OK);
-
-        Schedule schedule = findScedule(number,user);
-
-        if (message.getStatus().equals(StatusEnum.NOT_FOUND)){
-            message.setStatus(StatusEnum.NOT_FOUND);
-            message.setMessage("선택한 할일이 존재하지 않습니다. ");
-
-            return message;
-        }
-
-        message.setStatus(StatusEnum.OK);
-        message.setMessage("선택한 일정의 정보 조회를 성공했습니다.");
-        message.setData(new ScheduleResponseDto(schedule));
-
-        return message;
-    }
-
-    private Schedule findScedule(Integer number, User user) {
-        Schedule schedule = scheduleRepository.findById(number).orElseThrow(() -> new IllegalArgumentException("선택한 할일이 존재하지 않습니다. "));
-        if(!schedule.getUser().getUsername().equals(user.getUsername())){
-            message.setStatus(StatusEnum.NOT_FOUND);
-            message.setMessage("작성자의 할일이 존재하지 않습니다 ");
-            message.setData(null);
-        }
-        return schedule;
-    }
-
-    @Transactional
-    public Message updateSchedule(Integer number, ScheduleRequestDto requestDto, User user) {
-        message.setStatus(StatusEnum.OK);
-        Schedule schedule = findScedule(number,user);
-        if (message.getStatus().equals(StatusEnum.NOT_FOUND)){
-            message.setStatus(StatusEnum.NOT_FOUND);
-            message.setMessage("작성자의 할일이 존재하지 않습니다 ");
-            return message;
-        }
-
-        schedule.update(requestDto);
-
-        message.setStatus(StatusEnum.OK);
-        message.setMessage("선택한 일정의 수정 성공했습니다.");
-        message.setData(new ScheduleResponseDto(schedule));
-
-        return message;
-
-    }
-
-    @Transactional
-    public Message updateScheduleState(Integer number, User user) {
-        message.setStatus(StatusEnum.OK);
-        Schedule schedule = findScedule(number,user);
-        if (message.getStatus().equals(StatusEnum.NOT_FOUND)){
-            message.setStatus(StatusEnum.NOT_FOUND);
-            message.setMessage("작성자의 할일이 존재하지 않습니다 ");
-            return message;
-        }
-
-        schedule.updateState(true);
-
-        message.setStatus(StatusEnum.OK);
-        message.setMessage(number+" 가 완료 상태로 변경되었습니다.");
-        message.setData(new ScheduleResponseDto2(schedule, schedule.isState()));
-
-        return message;
-
-    }
+    /**
+     * 게시글 상태 완료
+     * @return 게시글 선택 조회 결과
+     */
+    public Message updateScheduleState(Integer number, User user);
 }

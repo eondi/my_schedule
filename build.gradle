@@ -60,7 +60,17 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc' // Jdbc, Driver
 	implementation 'com.h2database:h2' // h2 : implementation
 
-	implementation 'com.google.code.gson:gson:2.8.7'}
+	implementation 'com.google.code.gson:gson:2.8.7'
+
+	// QueryDSL 적용을 위한 의존성 (SpringBoot3.0 부터는 jakarta 사용해야함)
+	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
+}
+
+
 
 
 

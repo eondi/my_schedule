@@ -5,6 +5,7 @@ import com.sprata.my_schedule.dto.ScheduleRequestDto;
 import com.sprata.my_schedule.entity.Comment;
 import com.sprata.my_schedule.entity.Schedule;
 import com.sprata.my_schedule.entity.User;
+import com.sprata.my_schedule.repository.CommentQueryRepository;
 import com.sprata.my_schedule.repository.CommentRepository;
 import com.sprata.my_schedule.repository.ScheduleRepository;
 import com.sprata.my_schedule.responsentity.Message;
@@ -28,6 +29,9 @@ import static org.mockito.Mockito.doReturn;
 class CommentServiceTest {
     @Mock
     CommentRepository commentRepository;
+
+    @Mock
+    CommentQueryRepository commentQueryRepository;
 
     @Mock
     ScheduleRepository scheduleRepository;
@@ -68,7 +72,7 @@ class CommentServiceTest {
     @DisplayName("댓글 수정 테스트")
     public  void  updateCommentTest(){
         // given
-        CommentService commentService = new CommentService(scheduleRepository,commentRepository);
+        CommentService commentService = new CommentServiceImpl(scheduleRepository,commentRepository,commentQueryRepository);
         given(commentRepository.findById(1L)).willReturn(Optional.of(comment));
 
         // when
@@ -87,7 +91,7 @@ class CommentServiceTest {
     @DisplayName("댓글 수정 테스트")
     public  void  updateCommentErrorTest(){
         // given
-        CommentService commentService = new CommentService(scheduleRepository,commentRepository);
+        CommentService commentService = new CommentServiceImpl(scheduleRepository,commentRepository,commentQueryRepository);
 
         // when
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -104,7 +108,7 @@ class CommentServiceTest {
     @DisplayName("댓글 삭제 테스트")
     public  void  deleteCommentTest(){
         // given
-        CommentService commentService = new CommentService(scheduleRepository,commentRepository);
+        CommentService commentService = new CommentServiceImpl(scheduleRepository,commentRepository,commentQueryRepository);
         given(commentRepository.findById(1L)).willReturn(Optional.of(comment));
 
         // when
@@ -120,7 +124,7 @@ class CommentServiceTest {
     @DisplayName("댓글 삭제 에러 테스트")
     public  void  deleteCommentErrorTest(){
         // given
-        CommentService commentService = new CommentService(scheduleRepository,commentRepository);
+        CommentService commentService = new CommentServiceImpl(scheduleRepository,commentRepository,commentQueryRepository);
 
         // when
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {

@@ -24,14 +24,14 @@ public class CommentController {
 
     //댓글 작성
     @PostMapping("/create/{number}")
-    public ResponseEntity<Message> createProduct(@PathVariable Integer number, @RequestBody CommentRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseEntity<Message> createComment(@PathVariable Integer number, @RequestBody CommentRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         System.out.println("here");
         return new ResponseEntity<>(commentService.createComment(number, requestDto, userDetails.getUser()), HttpStatus.OK);
     }
 
     //댓글 수정
     @PutMapping("/update/{number}")
-    public ResponseEntity<Message>  updateSchedule(@PathVariable Long number, @RequestBody CommentRequestDto requestDto,@AuthenticationPrincipal UserDetailsImpl userDetails) throws IllegalAccessException {
+    public ResponseEntity<Message>  updateComment(@PathVariable Long number, @RequestBody CommentRequestDto requestDto,@AuthenticationPrincipal UserDetailsImpl userDetails) throws IllegalAccessException {
 
         return commentService.updateComment(number, requestDto, userDetails.getUser());
 
@@ -40,9 +40,17 @@ public class CommentController {
 
     //댓글 삭제
     @DeleteMapping("/delete/{number}")
-    public ResponseEntity<Message> deleteSchedule(@PathVariable Long number) throws IllegalAccessException {
+    public ResponseEntity<Message> deleteComment(@PathVariable Long number) throws IllegalAccessException {
 
         return commentService.deleteComment(number);
+
+    }
+
+    // 자신이 쓴 댓글 전체 검색
+    @GetMapping
+    public ResponseEntity<Message> getAllComment(@AuthenticationPrincipal UserDetailsImpl userDetails) throws IllegalAccessException {
+
+        return commentService.getAllComment(userDetails.getUser());
 
     }
 }

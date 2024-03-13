@@ -59,7 +59,7 @@ class ScheduleServiceTest {
     @DisplayName("게시글 전체 조회 테스트")
     public  void  getAllSchedulesTest(){
         // given
-        ScheduleService scheduleService = new ScheduleService(scheduleRepository);
+        ScheduleService scheduleService = new ScheduleServiceImpl(scheduleRepository);
         doReturn(scheduleList).when(scheduleRepository).findAll();
 
         // when
@@ -74,7 +74,7 @@ class ScheduleServiceTest {
     @DisplayName("게시글 선택 조회 테스트")
     public  void getScheduleTest(){
         // given
-        ScheduleService scheduleService = new ScheduleService(scheduleRepository);
+        ScheduleService scheduleService = new ScheduleServiceImpl(scheduleRepository);
         given(scheduleRepository.findById(1)).willReturn(Optional.of(schedule));
 
         // when
@@ -89,7 +89,7 @@ class ScheduleServiceTest {
     @DisplayName("게시글 선택 조회 에러 테스트")
     public  void getScheduleErrorTest(){
         // given
-        ScheduleService scheduleService = new ScheduleService(scheduleRepository);
+        ScheduleService scheduleService = new ScheduleServiceImpl(scheduleRepository);
 
         // when
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -106,7 +106,8 @@ class ScheduleServiceTest {
     @DisplayName("게시글 수정 테스트")
     public  void updateScheduleTest(){
         // given
-        ScheduleService scheduleService = new ScheduleService(scheduleRepository);
+        ScheduleService scheduleService = new ScheduleServiceImpl(scheduleRepository) {
+        };
         given(scheduleRepository.findById(1)).willReturn(Optional.of(schedule));
 
         // when
@@ -120,7 +121,7 @@ class ScheduleServiceTest {
     @DisplayName("게시글 수정 에러 테스트 : 사용자가 다른 경우")
     public  void updateScheduleErrorTest(){
         // given
-        ScheduleService scheduleService = new ScheduleService(scheduleRepository);
+        ScheduleService scheduleService = new ScheduleServiceImpl(scheduleRepository);
         given(scheduleRepository.findById(1)).willReturn(Optional.of(schedule));
         User user = new User(2L,"testUser2", "testUser2");
 
@@ -135,7 +136,7 @@ class ScheduleServiceTest {
     @DisplayName("게시글 상태 완료 변경 테스트")
     public void updateScheduleStateTest(){
         // given
-        ScheduleService scheduleService = new ScheduleService(scheduleRepository);
+        ScheduleService scheduleService = new ScheduleServiceImpl(scheduleRepository);
         given(scheduleRepository.findById(1)).willReturn(Optional.of(schedule));
 
         // when

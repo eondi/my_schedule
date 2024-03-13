@@ -1,20 +1,14 @@
 package com.sprata.my_schedule.controller;
 
-import com.sprata.my_schedule.Exception.PwNotFoundException;
 import com.sprata.my_schedule.dto.ScheduleRequestDto;
-import com.sprata.my_schedule.dto.ScheduleResponseDto;
-import com.sprata.my_schedule.entity.Schedule;
 import com.sprata.my_schedule.responsentity.Message;
 import com.sprata.my_schedule.security.UserDetailsImpl;
 import com.sprata.my_schedule.service.ScheduleService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.*;
 
 
 @RestController

@@ -33,7 +33,7 @@ class UserServiceTest {
     public void signupDupTest(){
         // given
         SignupRequestDto requestDto = new SignupRequestDto("TestUser","TestPw");
-        UserService userService = new UserService(userRepository,passwordEncoder);
+        UserService userService = new UserServiceImpl(userRepository,passwordEncoder);
         User user = new User("TestUser","TestPw");
         given(userRepository.findByUsername("TestUser")).willReturn(Optional.of(user));
 
