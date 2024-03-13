@@ -1,8 +1,11 @@
 package com.sprata.my_schedule.service;
 
 import com.sprata.my_schedule.dto.CommentRequestDto;
+import com.sprata.my_schedule.dto.CommentResponseDto;
+import com.sprata.my_schedule.dto.PageDTO;
 import com.sprata.my_schedule.entity.User;
 import com.sprata.my_schedule.responsentity.Message;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -36,5 +39,5 @@ public interface CommentService {
      * @param user 전체 댓글 조회 요청자
      * @return 댓글 수정 결과
      */
-    public  ResponseEntity<Message> getAllComment(User user);
+    public Page<CommentResponseDto> getAllComment(PageDTO pageDTO, User user);
 }

@@ -1,5 +1,6 @@
 package com.sprata.my_schedule.repository;
 
+import com.sprata.my_schedule.config.JpaConfig;
 import com.sprata.my_schedule.dto.CommentRequestDto;
 import com.sprata.my_schedule.dto.ScheduleRequestDto;
 import com.sprata.my_schedule.entity.Comment;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,6 +23,7 @@ class CommentRepositoryTest {
     private ScheduleRepository scheduleRepository;
     @Test
     @DisplayName("댓글 추가")
+
     void addCommentTest() {
         // given
         User user = new User("name", "pw");

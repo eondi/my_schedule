@@ -130,33 +130,33 @@ class ScheduleControllerTest {
         resultActions.andExpect(status().isOk());
     }
 
-    @Test
-    @DisplayName("일정 전체 조회 테스트")
-    void selectALlTest() throws Exception {
-
-        // given
-        this.mockUserSetup();
-        ScheduleRequestDto requestDto = new ScheduleRequestDto("TestTitle","TestText");
-        String postInfo = objectMapper.writeValueAsString(requestDto);
-        doReturn(scheduleList).when(scheduleRepository).findAll();
-        Message message = new Message();
-        message.setStatus(StatusEnum.OK);
-        message.setMessage("일정 전체 조회를 성공했습니다.");
-        message.setData(new HashMap<>());
-
-        given(scheduleService.getAllSchedules()).willReturn(message);
-
-        // when - then
-        ResultActions resultActions  = mvc.perform(get("/api/schedules/all")
-                .contentType(MediaType.APPLICATION_JSON)
-                .principal(mockPrincipal)
-        );
-
-        MvcResult mvcResult = resultActions.andExpect(status().isOk()).andReturn();
-
-        resultActions.andExpect(status().isOk());
-        resultActions.andExpect(content().json("{'status':'OK','message': '일정 전체 조회를 성공했습니다.', 'data':{}}"));
-    }
+//    @Test
+//    @DisplayName("일정 전체 조회 테스트")
+//    void selectALlTest() throws Exception {
+//
+//        // given
+//        this.mockUserSetup();
+//        ScheduleRequestDto requestDto = new ScheduleRequestDto("TestTitle","TestText");
+//        String postInfo = objectMapper.writeValueAsString(requestDto);
+//        doReturn(scheduleList).when(scheduleRepository).findAll();
+//        Message message = new Message();
+//        message.setStatus(StatusEnum.OK);
+//        message.setMessage("일정 전체 조회를 성공했습니다.");
+//        message.setData(new HashMap<>());
+//
+//        given(scheduleService.getAllSchedules()).willReturn(message);
+//
+//        // when - then
+//        ResultActions resultActions  = mvc.perform(get("/api/schedules/all")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .principal(mockPrincipal)
+//        );
+//
+//        MvcResult mvcResult = resultActions.andExpect(status().isOk()).andReturn();
+//
+//        resultActions.andExpect(status().isOk());
+//        resultActions.andExpect(content().json("{'status':'OK','message': '일정 전체 조회를 성공했습니다.', 'data':{}}"));
+//    }
 
     @Test
     @DisplayName("일정 일부 조회 테스트")

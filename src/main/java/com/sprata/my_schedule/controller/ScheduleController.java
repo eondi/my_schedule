@@ -1,14 +1,19 @@
 package com.sprata.my_schedule.controller;
 
 import com.sprata.my_schedule.dto.ScheduleRequestDto;
+import com.sprata.my_schedule.dto.ScheduleResponseDto;
+import com.sprata.my_schedule.dto.ScheduleResponseDto2;
 import com.sprata.my_schedule.responsentity.Message;
+import com.sprata.my_schedule.responsentity.StatusEnum;
 import com.sprata.my_schedule.security.UserDetailsImpl;
 import com.sprata.my_schedule.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
 
 
 @RestController
@@ -17,6 +22,8 @@ import org.springframework.web.bind.annotation.*;
 public class ScheduleController  {
 
     private final ScheduleService scheduleService;
+    Message message = new Message();
+    HttpHeaders headers= new HttpHeaders();
 
 
     // 일정 작성 기능
@@ -27,9 +34,16 @@ public class ScheduleController  {
 
     //회원별로 각각 나누어서 일정 전체 조회 기능
     @GetMapping("/all")
-    public ResponseEntity<Message> getAllSchedules(){
+    public ResponseEntity<Message> getAllSchedules(@RequestParam("page") int page,
+                                                   @RequestParam("size") int size,
+                                                   @RequestParam("sortBy") String sortBy,
+                                                   @RequestParam("isAsc") boolean isAsc){
+        Page<ScheduleResponseDto> page_result = scheduleService.getAllSchedules(page -1, size, sortBy, isAsc);
+        message.setStatus(StatusEnum.OK);
+        message.setMessage("일정 전체 조회를 성공했습니다.");
+        message.setData(page_result);
 
-        return  new ResponseEntity<>(scheduleService.getAllSchedules(), HttpStatus.OK );
+        return  new ResponseEntity<>(message, HttpStatus.OK );
     }
 
     //선택 일정 조회 기능

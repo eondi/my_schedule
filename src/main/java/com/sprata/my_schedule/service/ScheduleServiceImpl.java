@@ -10,6 +10,10 @@ import com.sprata.my_schedule.responsentity.Message;
 import com.sprata.my_schedule.responsentity.StatusEnum;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,33 +45,17 @@ public class ScheduleServiceImpl implements  ScheduleService{
     }
 
     @Override
-    public Message getAllSchedules() {
-        List<Schedule> scheduleList = scheduleRepository.findAll();
+    public Page<ScheduleResponseDto> getAllSchedules(int page, int size, String sortBy, boolean isAsc) {
+        Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort sort = Sort.by(direction, sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
 
-        HashMap<String, List<ScheduleResponseDto2>> scheduleHashMap = new HashMap<>();
-
-        for (Schedule schedule: scheduleList){
-            if(!scheduleHashMap.containsKey(schedule.getUser().getUsername())){
-                List<ScheduleResponseDto2> ScheduleList = new ArrayList<>();
-                ScheduleList.add(new ScheduleResponseDto2(schedule, schedule.isState()));
-                scheduleHashMap.put(schedule.getUser().getUsername(), ScheduleList);
-            }else{
-                scheduleHashMap.get(schedule.getUser().getUsername()).add(new ScheduleResponseDto2(schedule, schedule.isState()));
-            }
-        }
-
-        // 정렬
-        for (String name : scheduleHashMap.keySet()){
-            Stream<ScheduleResponseDto2> temp = scheduleHashMap.get(name).stream().sorted(Comparator.comparing(ScheduleResponseDto2::getCreatedAt).reversed());
-            scheduleHashMap.put(name, temp.toList());
-        }
+        Page<Schedule> schedulePageList = scheduleRepository.findAll(pageable);
 
 
-        message.setStatus(StatusEnum.OK);
-        message.setMessage("일정 전체 조회를 성공했습니다.");
-        message.setData(scheduleHashMap);
+        Page<ScheduleResponseDto> scheduleList = schedulePageList.map(ScheduleResponseDto::new);
 
-        return message;
+        return scheduleList;
 
 
     }

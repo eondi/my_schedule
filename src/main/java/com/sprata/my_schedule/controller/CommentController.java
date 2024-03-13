@@ -1,14 +1,14 @@
 package com.sprata.my_schedule.controller;
 
-import com.sprata.my_schedule.dto.CommentRequestDto;
-import com.sprata.my_schedule.dto.CommentResponseDto;
-import com.sprata.my_schedule.dto.ScheduleRequestDto;
-import com.sprata.my_schedule.dto.ScheduleResponseDto;
+import com.sprata.my_schedule.dto.*;
 import com.sprata.my_schedule.responsentity.Message;
+import com.sprata.my_schedule.responsentity.StatusEnum;
 import com.sprata.my_schedule.security.UserDetailsImpl;
 import com.sprata.my_schedule.service.CommentService;
 import com.sprata.my_schedule.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,6 +21,9 @@ import java.util.List;
 @RequestMapping("/api/comments")
 public class CommentController {
     private final CommentService commentService;
+
+    Message message = new Message();
+    HttpHeaders headers= new HttpHeaders();
 
     //댓글 작성
     @PostMapping("/create/{number}")
@@ -48,9 +51,15 @@ public class CommentController {
 
     // 자신이 쓴 댓글 전체 검색
     @GetMapping
-    public ResponseEntity<Message> getAllComment(@AuthenticationPrincipal UserDetailsImpl userDetails) throws IllegalAccessException {
+    public ResponseEntity<Message> getAllComment(@RequestBody PageDTO pageDTO, @AuthenticationPrincipal UserDetailsImpl userDetails) throws IllegalAccessException {
 
-        return commentService.getAllComment(userDetails.getUser());
+        Page<CommentResponseDto> page_result =  commentService.getAllComment(pageDTO, userDetails.getUser());
+
+        message.setStatus(StatusEnum.OK);
+        message.setMessage("댓글 전체 조회를 성공했습니다.");
+        message.setData(page_result);
+
+        return  new ResponseEntity<>(message, HttpStatus.OK );
 
     }
 }

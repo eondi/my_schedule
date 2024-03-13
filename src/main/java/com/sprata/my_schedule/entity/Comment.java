@@ -1,11 +1,9 @@
 package com.sprata.my_schedule.entity;
 
 import com.sprata.my_schedule.dto.CommentRequestDto;
-import com.sprata.my_schedule.dto.CommentResponseDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Getter
@@ -20,7 +18,7 @@ public class Comment extends Timestamped{
     private String text;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "id", nullable = false)
     private User user;
 
     @ManyToOne

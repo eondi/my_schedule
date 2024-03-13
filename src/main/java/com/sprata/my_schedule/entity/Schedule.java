@@ -20,6 +20,7 @@ import java.util.List;
 public class Schedule extends Timestamped{
 
     @Id
+    @Column(name = "schedule_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer number;
 
@@ -33,7 +34,7 @@ public class Schedule extends Timestamped{
     private boolean state;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "id")
     private User user;
 
 

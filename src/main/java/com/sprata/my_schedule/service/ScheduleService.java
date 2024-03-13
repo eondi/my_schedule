@@ -10,6 +10,7 @@ import com.sprata.my_schedule.responsentity.Message;
 import com.sprata.my_schedule.responsentity.StatusEnum;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +37,7 @@ public interface ScheduleService {
      * 게시글 전체 조회
      * @return 게시글 전체 조회 결과
      */
-    public Message getAllSchedules();
+    public Page<ScheduleResponseDto> getAllSchedules(int page, int size, String sortBy, boolean isAsc);
 
 
     /**

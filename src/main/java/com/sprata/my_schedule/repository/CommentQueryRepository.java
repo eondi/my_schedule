@@ -6,6 +6,9 @@ import com.sprata.my_schedule.entity.Comment;
 import com.sprata.my_schedule.entity.QComment;
 import com.sprata.my_schedule.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,10 +19,15 @@ public class CommentQueryRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
 
-    public List<Comment> serchAll(User user) {
+    public Page<Comment> serchAll(User user, Pageable pageable) {
 
         QComment qComment = new QComment("c");
-        List<Comment> comment_list = jpaQueryFactory.selectFrom(qComment).where(qComment.user.id.eq(user.getId())).orderBy(qComment.number.asc()).fetch();
-        return  comment_list;
+        List<Comment> comment_list = jpaQueryFactory.selectFrom(qComment).where(qComment.user.id.eq(user.getId()))
+                .offset(pageable.getOffset()).limit(pageable.getPageSize())
+                .orderBy(qComment.number.asc()).fetch();
+
+        long totalSize = jpaQueryFactory.select(qComment.count()).from(qComment).where(qComment.user.id.eq(user.getId())).fetchOne();
+
+        return PageableExecutionUtils.getPage(comment_list, pageable, () -> totalSize);
     }
 }

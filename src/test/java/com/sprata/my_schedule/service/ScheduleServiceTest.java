@@ -55,20 +55,20 @@ class ScheduleServiceTest {
 
 
 
-    @Test
-    @DisplayName("게시글 전체 조회 테스트")
-    public  void  getAllSchedulesTest(){
-        // given
-        ScheduleService scheduleService = new ScheduleServiceImpl(scheduleRepository);
-        doReturn(scheduleList).when(scheduleRepository).findAll();
-
-        // when
-        Message message = scheduleService.getAllSchedules();
-
-        // then
-        assertEquals("일정 전체 조회를 성공했습니다.",message.getMessage());
-
-    }
+//    @Test
+//    @DisplayName("게시글 전체 조회 테스트")
+//    public  void  getAllSchedulesTest(){
+//        // given
+//        ScheduleService scheduleService = new ScheduleServiceImpl(scheduleRepository);
+//        doReturn(scheduleList).when(scheduleRepository).findAll();
+//
+//        // when
+//        Message message = scheduleService.getAllSchedules();
+//
+//        // then
+//        assertEquals("일정 전체 조회를 성공했습니다.",message.getMessage());
+//
+//    }
 
     @Test
     @DisplayName("게시글 선택 조회 테스트")

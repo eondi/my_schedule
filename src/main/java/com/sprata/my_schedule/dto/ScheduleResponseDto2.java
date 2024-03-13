@@ -4,6 +4,8 @@ import com.sprata.my_schedule.entity.Schedule;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 public class ScheduleResponseDto2 {

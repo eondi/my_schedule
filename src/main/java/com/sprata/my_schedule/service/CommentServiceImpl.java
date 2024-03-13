@@ -4,6 +4,8 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sprata.my_schedule.dto.CommentRequestDto;
 import com.sprata.my_schedule.dto.CommentResponseDto;
+import com.sprata.my_schedule.dto.PageDTO;
+import com.sprata.my_schedule.dto.ScheduleResponseDto;
 import com.sprata.my_schedule.entity.Comment;
 import com.sprata.my_schedule.entity.QComment;
 import com.sprata.my_schedule.entity.Schedule;
@@ -16,6 +18,7 @@ import com.sprata.my_schedule.responsentity.StatusEnum;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.provider.QueryComment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -101,23 +104,15 @@ public class CommentServiceImpl implements  CommentService{
 
 
     @Override
-    public ResponseEntity<Message> getAllComment(User user) {
-        Message message = new Message();
-        HttpHeaders headers= new HttpHeaders();
-
-        List<Comment> comment_list = commentQueryRepository.serchAll(user);
+    public Page<CommentResponseDto> getAllComment(PageDTO pageDTO, User user) {
 
 
+        Page<Comment> commentPageList = commentQueryRepository.serchAll(user, pageDTO.toPageable("number"));
 
-//        JPAQuery query = new JPAQuery(em);
-//        QComment qComment = new QComment("c");
-//
-//        List<Comment> comment_list = query.from(qComment).where(qComment.user.eq(user)).orderBy(qComment.number.asc()).fetch();
+        Page<CommentResponseDto> commentList = commentPageList.map(CommentResponseDto::new);
 
-        message.setStatus(StatusEnum.OK);
-        message.setMessage("선택한 댓글의 삭제 성공했습니다.");
-//        message.setData(new CommentResponseDto(comment));
 
-        return new ResponseEntity<>(message, headers, HttpStatus.OK);
+
+        return commentList;
     }
 }
