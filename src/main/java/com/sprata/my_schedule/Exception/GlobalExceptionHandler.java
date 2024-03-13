@@ -54,4 +54,16 @@ public class GlobalExceptionHandler {
                 .body(new ExceptionForm((HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST,
                         e.getMessage()));
     }
+
+    @ExceptionHandler({ProductNotFoundException.class})
+    public ResponseEntity<ExceptionForm> notFoundProductExceptionHandler(ProductNotFoundException e) {
+        ExceptionForm restApiException = new ExceptionForm((HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST,
+                e.getMessage());
+        return new ResponseEntity<>(
+                // HTTP body
+                restApiException,
+                // HTTP status code
+                HttpStatus.NOT_FOUND
+        );
+    }
 }
