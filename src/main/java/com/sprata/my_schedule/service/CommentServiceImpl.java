@@ -30,6 +30,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CommentServiceImpl implements  CommentService{
     private  final ScheduleRepository scheduleRepository;
     private  final CommentRepository  commentRepository;
@@ -108,6 +109,10 @@ public class CommentServiceImpl implements  CommentService{
 
 
         Page<Comment> commentPageList = commentQueryRepository.serchAll(user, pageDTO.toPageable("number"));
+
+        if (commentPageList == null){
+            throw new IllegalArgumentException("댓글이 없습니다");
+        }
 
         Page<CommentResponseDto> commentList = commentPageList.map(CommentResponseDto::new);
 

@@ -1,6 +1,7 @@
 package com.sprata.my_schedule.service;
 
 import com.sprata.my_schedule.dto.ScheduleRequestDto;
+import com.sprata.my_schedule.dto.ScheduleResponseDto;
 import com.sprata.my_schedule.dto.ScheduleResponseDto2;
 import com.sprata.my_schedule.entity.Schedule;
 import com.sprata.my_schedule.entity.User;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDateTime;
@@ -55,20 +57,23 @@ class ScheduleServiceTest {
 
 
 
-//    @Test
-//    @DisplayName("게시글 전체 조회 테스트")
-//    public  void  getAllSchedulesTest(){
-//        // given
-//        ScheduleService scheduleService = new ScheduleServiceImpl(scheduleRepository);
-//        doReturn(scheduleList).when(scheduleRepository).findAll();
-//
-//        // when
-//        Message message = scheduleService.getAllSchedules();
-//
-//        // then
-//        assertEquals("일정 전체 조회를 성공했습니다.",message.getMessage());
-//
-//    }
+    @Test
+    @DisplayName("게시글 전체 조회 테스트")
+    public  void  getAllSchedulesTest(){
+        // given
+        Sort sort = Sort.by(Sort.Direction.ASC, "number");
+        Pageable pageable = PageRequest.of(1, 5, sort);
+        Page<Schedule> responsePages = new PageImpl<>(scheduleList);
+        ScheduleService scheduleService = new ScheduleServiceImpl(scheduleRepository);
+        doReturn(responsePages).when(scheduleRepository).findAll(pageable);
+
+        // when
+        Page<ScheduleResponseDto> res = scheduleService.getAllSchedules( 1,  5, "number",  true);
+
+        // then
+        assertEquals(2,res.getContent().size());
+
+    }
 
     @Test
     @DisplayName("게시글 선택 조회 테스트")

@@ -2,7 +2,6 @@ package com.sprata.my_schedule.controller;
 
 import com.sprata.my_schedule.dto.ScheduleRequestDto;
 import com.sprata.my_schedule.dto.ScheduleResponseDto;
-import com.sprata.my_schedule.dto.ScheduleResponseDto2;
 import com.sprata.my_schedule.responsentity.Message;
 import com.sprata.my_schedule.responsentity.StatusEnum;
 import com.sprata.my_schedule.security.UserDetailsImpl;
